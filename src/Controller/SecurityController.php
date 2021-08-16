@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
+use App\Entity\Categorie;
+use App\Form\AnnonceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -37,6 +42,11 @@ class SecurityController extends AbstractController
      */
     public function index()
     {
-        return $this->render('index.html.twig', []);
+        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findBy([],['id'=>'ASC']);
+        $categories = $this->getDoctrine()->getRepository(Categorie::class)->findBy([],['id'=>'ASC']);
+        return $this->render('index.html.twig', [
+            'annonces'=>$annonces,
+            'categories'=>$categories,
+        ]);
     }
 }
