@@ -12,12 +12,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @InheritanceType("SINGLE_TABLE")
- * @DiscriminatorColumn(name="cat", type="integer")
- * @DiscriminatorMap({"0" = "Annonce", "1" = "AnnonceImmobilier", "2" = "AnnonceAutomobile", "3" = "AnnonceEmploi"})
+ * @DiscriminatorColumn(name="cat", type="string")
+ * @DiscriminatorMap({"0" = "Annonce", "Immobilier" = "AnnonceImmobilier", "Automobile" = "AnnonceAutomobile", "Emploi" = "AnnonceEmploi"})
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
  */
 class Annonce
 {
+    /**
+     * @Groups({"Search"})
+     */
+    public ?int $match = null;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
