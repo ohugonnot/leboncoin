@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @InheritanceType("SINGLE_TABLE")
- * @DiscriminatorColumn(name="categorie", type="integer")
- * @DiscriminatorMap({"1" = "AnnonceImmobilier", "2" = "AnnonceAutomobile", "3" = "AnnonceEmploi"})
+ * @DiscriminatorColumn(name="cat", type="integer")
+ * @DiscriminatorMap({"0" = "Annonce", "1" = "AnnonceImmobilier", "2" = "AnnonceAutomobile", "3" = "AnnonceEmploi"})
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
  */
 class Annonce

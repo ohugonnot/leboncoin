@@ -46,4 +46,5 @@ mdp : test
 ### Problèmes et questionnements rencontrés
 - Architecture de la BDD, une annonce globale avec des champs dynamiques VS plusieurs tables avec les types d'annonce (Automobile, Emploi, Immobilier) à débattre     
 Je suis parti sur une seul table Annonce en BDD avec un formulaire et des assertions dynamique poru vérifier la cohérence de l'annonce mais je suis pas forcément convaincu
+Après réflexion je suis partie sur de l'inhéritance Mapping vu que doctrine semble gérer se genre de dilème plutot bien
 - Je suis parti sur un firewall et provider partagé et les nouvelles normes d'authentification de Symfony 5 qui sont en test actuellement a vérifier que cela fonctionne bien
