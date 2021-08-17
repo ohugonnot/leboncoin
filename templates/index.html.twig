@@ -132,6 +132,8 @@
                                                 "name": "Automobile"
                                                 },
                                                 "prix": 4000,
+                                                "marque": "Audi",
+                                                "modele": "Cabriolet",
                                                 "carburant": "Diesel"
                                                 }'
                                         </li>
@@ -142,13 +144,11 @@
                                                 -H 'content-type: application/json'
                                                 -H 'x-auth-token: {{ app.user.email }}'
                                                 -d '{
-                                                "titre": "titre",
-                                                "contenu": "contenu",
-                                                "categorie": {
-                                                "name": "Immobilier"
-                                                },
-                                                "surface": 500,
-                                                "prix": 1500
+                                                    "titre": "titre",
+                                                    "contenu": "contenu",
+                                                    "categorie": {
+                                                        "name": "{{ annonce.categorie.name }}"
+                                                    }
                                                 }'
                                             {% endfor %}
                                         </li>

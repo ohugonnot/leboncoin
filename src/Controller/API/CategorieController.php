@@ -5,6 +5,7 @@ namespace App\Controller\API;
 use App\Controller\API\Helper\TraitementTrait;
 use App\Entity\Categorie;
 use App\Form\CategorieType;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,8 +33,8 @@ class CategorieController extends AbstractController
     public function categories(): JsonResponse
     {
         $categories = $this->getDoctrine()->getRepository(Categorie::class)->findAll();
-        $categories = $this->serializer->serialize($categories,'json');
-        return JsonResponse::fromJsonString($categories);
+        $categorie_serialize = $this->serializer->serialize($categories,'json');
+        return JsonResponse::fromJsonString($categorie_serialize);
     }
 
     /**
@@ -44,7 +45,17 @@ class CategorieController extends AbstractController
     {
         $categorie = $categorie??new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie);
-        return $this->submitForm($request,$form,$categorie);
+
+        $data = json_decode($request->getContent(),true);
+        $form->submit($data);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($categorie);
+            $em->flush();
+            $categorie_serialize = $this->serializer->serialize($categorie,'json',SerializationContext::create()->setGroups([$categorie->getName()]));
+            return JsonResponse::fromJsonString($categorie_serialize,Response::HTTP_CREATED);
+        }
+        return $this->errorResponse($form);
     }
 
     /**
@@ -52,8 +63,8 @@ class CategorieController extends AbstractController
      */
     public function categorie(Categorie $categorie): JsonResponse
     {
-        $categorie = $this->serializer->serialize($categorie,'json');
-        return JsonResponse::fromJsonString($categorie);
+        $categorie_serialize = $this->serializer->serialize($categorie,'json');
+        return JsonResponse::fromJsonString($categorie_serialize);
     }
 
     /**

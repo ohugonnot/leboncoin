@@ -18,7 +18,7 @@ class Categorie
     const IMMOBILIER = 'Immobilier';
     const AUTOMOBILE = 'Automobile';
     const EMPLOI = 'Emploi';
-    const CATEGORIES = [1=>self::IMMOBILIER,2=>self::AUTOMOBILE,3=>self::EMPLOI];
+    const CATEGORIES = [self::IMMOBILIER,self::AUTOMOBILE,self::EMPLOI];
 
     /**
      * @ORM\Id

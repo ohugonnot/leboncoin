@@ -15,7 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
 
 class AnnonceType extends AbstractType
@@ -42,39 +41,47 @@ class AnnonceType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $annonce = $event->getData();
-            $categorie = $this->entityManager->getRepository(Categorie::class)->find($annonce['categorie']??null);
-            if(!$categorie)
+            $categorie_id = $annonce['categorie']??null;
+            $categorie = $this->entityManager->getRepository(Categorie::class)->find($categorie_id);
+            if(!$categorie && !$categorie instanceof Categorie)
                 return;
-
             $form = $event->getForm();
             if ($categorie->getName() === Categorie::IMMOBILIER) {
                 $form->add('surface', NumberType::class,[
                     'required' => true,
-                    'constraints'=>[new NotNull(),new Positive()],
+                    'constraints'=>[new NotBlank(null,null,true),new Positive()],
                 ]);
                 $form->add('prix', MoneyType::class,[
                     'required' => true,
-                    'constraints'=>[new NotNull(),new Positive()],
+                    'constraints'=>[new NotBlank(null,null,true),new Positive()],
                 ]);
             }
             if ($categorie->getName() === Categorie::AUTOMOBILE) {
                 $form->add('carburant', TextType::class,[
                     'required' => true,
+                    'constraints'=>[new NotBlank(null,null,true)],
+                ]);
+                $form->add('marque', TextType::class,[
+                    'required' => true,
+                    'constraints'=>[new NotBlank()],
+                ]);
+                $form->add('modele', TextType::class,[
+                    'required' => true,
                     'constraints'=>[new NotBlank()],
                 ]);
                 $form->add('prix', MoneyType::class,[
                     'required' => true,
-                    'constraints'=>[new NotBlank(),new Positive()],
+                    'constraints'=>[new NotBlank(null,null,true),new Positive()],
                 ]);
             }
             if ($categorie->getName() === Categorie::EMPLOI) {
                 $form->add('contrat', TextType::class,[
                     'required' => true,
-                    'constraints'=>[new NotBlank()],
+                    'constraints'=>[new NotBlank(null,null,true)],
                 ]);
                 $form->add('salaire', MoneyType::class,[
                     'required' => true,
-                    'constraints'=>[new NotBlank(),new Positive()],
+                    'constraints'=>[new NotBlank(null,null,true),new Positive()],
                 ]);
             }
         });

@@ -36,23 +36,4 @@ trait TraitementTrait
         ];
         return new JsonResponse($data, Response::HTTP_BAD_REQUEST);
     }
-
-    private function submitForm(Request $request, FormInterface $form, $object): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-        $categorie = $this->getDoctrine()->getRepository(Categorie::class)->findOneBy($data['categorie']??[]);
-        if(!$categorie)
-            return new JsonResponse(['Error'=>'La catégorie n\'existe pas'], Response::HTTP_BAD_REQUEST);
-        $data['categorie'] = $categorie->getId();
-        $form->submit($data);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $object->setUser($this->getUser());
-            $em->persist($object);
-            $em->flush();
-            $object = $this->serializer->serialize($object,'json',SerializationContext::create()->setGroups([$categorie->getName()]));
-            return JsonResponse::fromJsonString($object, Response::HTTP_CREATED);
-        }
-        return $this->errorResponse($form);
-    }
 }
