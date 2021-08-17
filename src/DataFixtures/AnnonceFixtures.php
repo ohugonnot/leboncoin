@@ -23,7 +23,7 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        foreach (range(0,500) as $nombre) {
+        foreach (range(0,1000) as $nombre) {
             $categorie = Categorie::CATEGORIES[array_rand(Categorie::CATEGORIES)];
             if($categorie === Categorie::EMPLOI)
             {

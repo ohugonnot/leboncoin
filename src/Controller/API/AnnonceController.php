@@ -67,6 +67,27 @@ class AnnonceController extends AbstractController
     }
 
     /**
+     * @Route("/annonce/search/{q}", name="annonce_seach", methods={"GET"})
+     */
+    public function searchAnnonceAutomobile(Request $request, ?string $q=null): JsonResponse
+    {
+        // Todo Methode pure PHP à améliorer avec une requête dans le repo
+        $q = $q??$request->query->get('q');
+        $annonces = $this->getDoctrine()->getManager()->getRepository(AnnonceAutomobile::class)->findAll();
+        $resultats = [];
+        foreach($annonces as $annonce)
+        {
+            similar_text(strtolower($q), strtolower($annonce->getModele()),$perc);
+            $annonce->match=$perc;
+            $resultats[$perc] = $annonce;
+        }
+        krsort($resultats);
+        $resultats = array_values($resultats);
+        $resultats = $this->serializer->serialize($resultats,'json',SerializationContext::create()->setGroups(['Automobile','Search']));
+        return JsonResponse::fromJsonString($resultats,200);
+    }
+
+    /**
      * @Route("/annonce/{categorie}", requirements={"categorie"="[a-zA-Z]+"}, name="annonce_list_categorie", methods={"GET"})
      * @Route("/annonce", name="annonce_list", methods={"GET"})
      */
@@ -125,25 +146,5 @@ class AnnonceController extends AbstractController
         $em->remove($annonce);
         $em->flush();
         return new JsonResponse('Deleted',RESPONSE::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * @Route("/annonce/search/{q}", name="annonce_seach", methods={"GET"})
-     */
-    public function searchAnnonceAutomobile(?string $q=null): JsonResponse
-    {
-        // Todo Methode pure PHP à améliorer avec une requête dans le repo
-        $annonces = $this->getDoctrine()->getManager()->getRepository(AnnonceAutomobile::class)->findAll();
-        $resultats = [];
-        foreach($annonces as $annonce)
-        {
-            similar_text(strtolower($q), strtolower($annonce->getModele()),$perc);
-            $annonce->match=$perc;
-            $resultats[$perc] = $annonce;
-        }
-        krsort($resultats);
-        $resultats = array_values($resultats);
-        $resultats = $this->serializer->serialize($resultats,'json',SerializationContext::create()->setGroups(['Automobile','Search']));
-        return JsonResponse::fromJsonString($resultats,200);
     }
 }

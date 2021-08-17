@@ -104,6 +104,9 @@
                                 </div>
                                 <div class="card-body">
                                     <ul>
+                                        <li>
+                                            Moteur de recherche de modèle de voiture <form action="{{ path('api_annonce_annonce_seach') }}" method="GET"><input type="text" name="q" placeholder="modèle"></form>
+                                        </li>
                                         <li>Liste des annonces : <a href='{{ path('api_annonce_annonce_list') }}'>ici</a></li>
                                         <li>Selectionner une annonce avec son id
                                             <ul>
