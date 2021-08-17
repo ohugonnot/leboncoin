@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use App\Repository\AnnonceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\InheritanceType;
 use JMS\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @InheritanceType("SINGLE_TABLE")
+ * @DiscriminatorColumn(name="categorie", type="integer")
+ * @DiscriminatorMap({"1" = "AnnonceImmobilier", "2" = "AnnonceAutomobile", "3" = "AnnonceEmploi"})
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
  */
 class Annonce
@@ -20,53 +26,18 @@ class Annonce
     private $id;
 
     /**
-     * @Groups({"Immobilier", "Automobile","Emploi"})
+     * @Groups({"Immobilier","Automobile","Emploi"})
      * @Assert\NotBlank(allowNull=false)
      * @ORM\Column(type="string", length=255)
      */
     private string $titre;
 
     /**
-     * @Groups({"Immobilier", "Automobile","Emploi"})
+     * @Groups({"Immobilier","Automobile","Emploi"})
      * @Assert\NotBlank(allowNull=false)
      * @ORM\Column(type="text")
      */
     private string $contenu;
-
-    /**
-     * @Groups({"Automobile"})
-     * @Assert\NotBlank(allowNull=true)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $carburant;
-
-    /**
-     * @Groups({"Automobile","Immobilier"})
-     * @Assert\Positive()
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private ?float $prix;
-
-    /**
-     * @Groups({"Emploi"})
-     * @Assert\Positive()
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private ?float $salaire;
-
-    /**
-     * @Groups({"Emploi"})
-     * @Assert\NotBlank(allowNull=true)
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $contrat;
-
-    /**
-     * @Groups({"Immobilier"})
-     * @Assert\Positive()
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private ?float $surface;
 
     /**
      * @Groups({"Immobilier", "Automobile","Emploi"})
@@ -111,84 +82,24 @@ class Annonce
         return $this;
     }
 
-    public function getCarburant(): ?string
-    {
-        return $this->carburant;
-    }
-
-    public function setCarburant(?string $carburant): self
-    {
-        $this->carburant = $carburant;
-
-        return $this;
-    }
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(?float $prix): self
-    {
-        $this->prix = $prix;
-
-        return $this;
-    }
-
-    public function getSalaire(): ?float
-    {
-        return $this->salaire;
-    }
-
-    public function setSalaire(?float $salaire): self
-    {
-        $this->salaire = $salaire;
-
-        return $this;
-    }
-
-    public function getContrat(): ?string
-    {
-        return $this->contrat;
-    }
-
-    public function setContrat(?string $contrat): self
-    {
-        $this->contrat = $contrat;
-
-        return $this;
-    }
-
-    public function getSurface(): ?float
-    {
-        return $this->surface;
-    }
-
-    public function setSurface(?float $surface): self
-    {
-        $this->surface = $surface;
-
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
+    public function getCategorie(): Categorie
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorie(Categorie $categorie): self
     {
         $this->categorie = $categorie;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

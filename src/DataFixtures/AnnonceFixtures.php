@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Annonce;
+use App\Entity\AnnonceAutomobile;
+use App\Entity\AnnonceEmploi;
+use App\Entity\AnnonceImmobilier;
 use App\Entity\Categorie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -21,27 +23,31 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $contrat = ['CDI','CDD','INTERIM','STAGE'];
-        $carburant = ['Essence','Diesel','GPL','Sans Plomb 95'];
-        foreach (range(0,100) as $nombre) {
-            $annonce = new Annonce();
+        foreach (range(0,500) as $nombre) {
             $categorie = Categorie::CATEGORIES[array_rand(Categorie::CATEGORIES)];
-            $annonce->setCategorie($this->getReference($categorie));
             if($categorie === Categorie::EMPLOI)
             {
-                $annonce->setContrat($contrat[array_rand($contrat)]);
+                $annonce = new AnnonceEmploi();
+                $annonce->setContrat(AnnonceEmploi::CONTRATS[array_rand(AnnonceEmploi::CONTRATS)]);
                 $annonce->setSalaire($this->faker->numberBetween(1400,4500));
             }
             if($categorie === Categorie::AUTOMOBILE)
             {
-                $annonce->setCarburant($carburant[array_rand($carburant)]);
+                $annonce = new AnnonceAutomobile();
+                $marque = AnnonceAutomobile::MARQUES[array_rand(AnnonceAutomobile::MARQUES)];
+                $modele = AnnonceAutomobile::MODELES[$marque][array_rand(AnnonceAutomobile::MODELES[$marque])];
+                $annonce->setMarque($marque);
+                $annonce->setModele($modele);
+                $annonce->setCarburant(AnnonceAutomobile::CARBURANTS[array_rand(AnnonceAutomobile::CARBURANTS)]);
                 $annonce->setPrix($this->faker->numberBetween(800,9000));
             }
             if($categorie === Categorie::IMMOBILIER)
             {
+                $annonce = new AnnonceImmobilier();
                 $annonce->setPrix($this->faker->numberBetween(300,2000));
                 $annonce->setSurface($this->faker->numberBetween(25,500));
             }
+            $annonce->setCategorie($this->getReference($categorie));
             $annonce->setUser($this->getReference($nombre%12+1));
             $annonce->setTitre($categorie.' : '.$this->faker->realText('25'));
             $annonce->setContenu($this->faker->realText());
