@@ -29,6 +29,17 @@ composer require symfony/web-server-bundle --dev
 php bin/console server:start
 ```
 
+#Docker
+```shell
+docker-compose run php-fpm composer install
+docker-compose run php-fpm  bin/console doctrine:database:create
+docker-compose run php-fpm  bin/console doctrine:database:create --env=test
+docker-compose run php-fpm  bin/console doctrine:migrations:migrate
+// Charger les fixtures (fake data)
+docker-compose run php-fpm  bin/console doctrine:migration:sync-metadata-storage
+docker-compose run php-fpm  bin/console doctrine:fixtures:load
+```
+
 ### Pour se connecter
 http://localhost:8000/      
 login : test1@test.test      
