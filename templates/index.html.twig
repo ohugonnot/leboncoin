@@ -56,25 +56,25 @@
                                 </div>
                                 <div class="card-body">
                                     <ul>
-                                        <li>Liste des categories : <a href='{{ path('api_categorie_categorie_list') }}'>ici</a></li>
+                                        <li>Liste des categories : <a href='{{ path('api_categorie_list') }}'>ici</a></li>
                                         <li>Selectionner une categorie avec son id
                                             <ul>
                                                 {% for categorie in categories  %}
-                                                    <li><a href="{{ path('api_categorie_categorie_get',{id:categorie.id}) }}">{{ categorie.id }} - {{ categorie.name }}</a></li>
+                                                    <li><a href="{{ path('api_categorie_get',{id:categorie.id}) }}">{{ categorie.id }} - {{ categorie.name }}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
                                         <li>Supprimer une categorie<br>
                                             {% for categorie in categories|slice(0, 1)  %}
                                                 curl -X DELETE
-                                                {{ absolute_url(path('api_categorie_categorie_delete',{id:categorie.id})) }}
+                                                {{ absolute_url(path('api_categorie_delete',{id:categorie.id})) }}
                                                 -H 'content-type: application/json'
                                                 -H 'x-auth-token: {{ app.user.email }}'
                                             {% endfor %}
                                         </li>
                                         <li>Ajouter une categorie<br>
                                             curl -X POST
-                                            {{ absolute_url(path('api_categorie_categorie_create')) }}
+                                            {{ absolute_url(path('api_categorie_create')) }}
                                             -H 'content-type: application/json'
                                             -H 'x-auth-token: {{ app.user.email }}'
                                             -d '{
@@ -84,7 +84,7 @@
                                         <li>Modifier une categorie<br>
                                             {% for categorie in categories|slice(0, 1)  %}
                                                 curl -X PUT
-                                                {{ absolute_url(path('api_categorie_categorie_update',{id:categorie.id})) }}
+                                                {{ absolute_url(path('api_categorie_update',{id:categorie.id})) }}
                                                 -H 'content-type: application/json'
                                                 -H 'x-auth-token: {{ app.user.email }}'
                                                 -d '{
@@ -105,27 +105,27 @@
                                 <div class="card-body">
                                     <ul>
                                         <li>
-                                            Moteur de recherche de modèle de voiture <form action="{{ path('api_annonce_annonce_seach') }}" method="GET"><input type="text" name="q" placeholder="modèle"></form>
+                                            Moteur de recherche de modèle de voiture <form action="{{ path('api_annonce_search') }}" method="GET"><input type="text" name="q" placeholder="modèle"></form>
                                         </li>
-                                        <li>Liste des annonces : <a href='{{ path('api_annonce_annonce_list') }}'>ici</a></li>
+                                        <li>Liste des annonces : <a href='{{ path('api_annonce_list') }}'>ici</a></li>
                                         <li>Selectionner une annonce avec son id
                                             <ul>
                                                 {% for annonce in annonces|slice(0, 5)  %}
-                                                    <li><a href="{{ path('api_annonce_annonce_get',{id:annonce.id}) }}">{{ annonce.id }}</a></li>
+                                                    <li><a href="{{ path('api_annonce_get',{id:annonce.id}) }}">{{ annonce.id }}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
                                         <li>Supprimer une annonce<br>
                                             {% for annonce in annonces|slice(0, 1)  %}
                                                 curl -X DELETE
-                                                {{ absolute_url(path('api_annonce_annonce_delete',{id:annonce.id})) }}
+                                                {{ absolute_url(path('api_annonce_delete',{id:annonce.id})) }}
                                                 -H 'content-type: application/json'
                                                 -H 'x-auth-token: {{ app.user.email }}'
                                             {% endfor %}
                                         </li>
                                         <li>Ajouter une annonce<br>
                                                 curl -X POST
-                                                {{ absolute_url(path('api_annonce_annonce_create')) }}
+                                                {{ absolute_url(path('api_annonce_create')) }}
                                                 -H 'content-type: application/json'
                                                 -H 'x-auth-token: {{ app.user.email }}'
                                                 -d '{
@@ -143,7 +143,7 @@
                                         <li>Modifier une annonce<br>
                                             {% for annonce in annonces|slice(0, 1)  %}
                                                 curl -X PUT
-                                                {{ absolute_url(path('api_annonce_annonce_update',{id:annonce.id})) }}
+                                                {{ absolute_url(path('api_annonce_update',{id:annonce.id})) }}
                                                 -H 'content-type: application/json'
                                                 -H 'x-auth-token: {{ app.user.email }}'
                                                 -d '{

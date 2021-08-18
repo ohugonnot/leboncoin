@@ -67,7 +67,7 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/search/{q}", name="annonce_seach", methods={"GET"})
+     * @Route("/annonce/search/{q}", name="search", methods={"GET"})
      */
     public function searchAnnonceAutomobile(Request $request, ?string $q=null): JsonResponse
     {
@@ -89,8 +89,8 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{categorie}", requirements={"categorie"="[a-zA-Z]+"}, name="annonce_list_categorie", methods={"GET"})
-     * @Route("/annonce", name="annonce_list", methods={"GET"})
+     * @Route("/annonce/{categorie}", requirements={"categorie"="[a-zA-Z]+"}, name="list_categorie", methods={"GET"})
+     * @Route("/annonce", name="list", methods={"GET"})
      */
     public function annonces(?string $categorie=null): JsonResponse
     {
@@ -100,8 +100,8 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{categorie}/{id}", requirements={"id"="\d+","categorie"="[a-zA-Z]+"}, name="annonce_get_categorie", methods={"GET"})
-     * @Route("/annonce/{id}", requirements={"id"="\d+"}, name="annonce_get", methods={"GET"})
+     * @Route("/annonce/{categorie}/{id}", requirements={"id"="\d+","categorie"="[a-zA-Z]+"}, name="get_categorie", methods={"GET"})
+     * @Route("/annonce/{id}", requirements={"id"="\d+"}, name="get", methods={"GET"})
      */
     public function annonce(int $id, ?string $categorie): JsonResponse
     {
@@ -113,8 +113,8 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{id}", requirements={"id"="\d+"}, name="annonce_update", methods={"PUT","PATCH"})
-     * @Route("/annonce", name="annonce_create", methods={"POST"})
+     * @Route("/annonce/{id}", requirements={"id"="\d+"}, name="update", methods={"PUT","PATCH"})
+     * @Route("/annonce", name="create", methods={"POST"})
      */
     public function createAnnonce(Request $request,?Annonce $annonce = null): JsonResponse
     {
@@ -141,7 +141,7 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{id}", requirements={"id"="\d+"}, name="annonce_delete", methods={"DELETE"})
+     * @Route("/annonce/{id}", requirements={"id"="\d+"}, name="delete", methods={"DELETE"})
      */
     public function deleteAnnonce(Annonce $annonce): JsonResponse
     {

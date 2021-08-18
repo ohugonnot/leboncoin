@@ -28,7 +28,7 @@ class CategorieController extends AbstractController
     }
 
     /**
-     * @Route("/categories", name="categorie_list", methods={"GET"})
+     * @Route("/categories", name="list", methods={"GET"})
      */
     public function categories(): JsonResponse
     {
@@ -38,8 +38,17 @@ class CategorieController extends AbstractController
     }
 
     /**
-     * @Route("/categorie/{id}", name="categorie_update", methods={"PUT","PATCH"})
-     * @Route("/categorie", name="categorie_create", methods={"POST"})
+     * @Route("/categorie/{id}", name="get", methods={"GET"})
+     */
+    public function categorie(Categorie $categorie): JsonResponse
+    {
+        $categorie_serialize = $this->serializer->serialize($categorie,'json');
+        return JsonResponse::fromJsonString($categorie_serialize);
+    }
+
+    /**
+     * @Route("/categorie/{id}", name="update", methods={"PUT","PATCH"})
+     * @Route("/categorie", name="create", methods={"POST"})
      */
     public function createCategorie(Request $request,?Categorie $categorie = null): JsonResponse
     {
@@ -59,16 +68,7 @@ class CategorieController extends AbstractController
     }
 
     /**
-     * @Route("/categorie/{id}", name="categorie_get", methods={"GET"})
-     */
-    public function categorie(Categorie $categorie): JsonResponse
-    {
-        $categorie_serialize = $this->serializer->serialize($categorie,'json');
-        return JsonResponse::fromJsonString($categorie_serialize);
-    }
-
-    /**
-     * @Route("/categorie/{id}", name="categorie_delete", methods={"DELETE"})
+     * @Route("/categorie/{id}", name="delete", methods={"DELETE"})
      */
     public function deleteCategorie(Categorie $categorie): JsonResponse
     {

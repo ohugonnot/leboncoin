@@ -37,6 +37,7 @@ mdp : test
 
 ### Pour les tests
 ```shell
+php bin/console doctrine:database:create --env=test
 php ./vendor/bin/phpunit
 ```
 
