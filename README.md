@@ -53,16 +53,12 @@ php ./vendor/bin/phpunit
 ```
 
 ## Todo
-- Problème avec Docker et la version de la BDD. La table doctrine migration semblent avoir des différences avec l'expected
 - Nouvelle refacto de Doctrine Inheritence Mapping, créer un FormType par entité est spécifié les asserts dans la classe
 - Ajouter un système de création de Token crypté (JWT) avec un délais de validité et ne plus utiliser uniquement l'adresse mail comme token
 - Ajouter un event listener sur les erreurs pour les transformer en JSON et améliorer les infos de retour et bloquer les retours sensibles pour la sécurité
 - Optimiser le moteur de recherche avec le % de match pour faire la requête directement en DQL plutôt que Full PHP
 - Ajouter des variables get (limit,sort,order,offset) pour créer les pagers et améliorer l'utilisation de l'api
 - Ajouter un système de cache pour l'API avec Doctrine Cache pour améliorer les perfs
-- Ajouter les tests unitaires et fonctionnels sur les parties sensibles (route POST, PUT, DELETE, GET et la recherche)
-- Monter le projet avec docker
-
 
 ### Problèmes, questionnements et stratégies rencontrés lors de la conception
 - Architecture de la BDD, une classe annonce globale avec des champs dynamiques VS plusieurs tables avec les types d'annonce (AnnonceAutomobile, AnnonceEmploi, AnnonceImmobilier) à débattre
