@@ -31,12 +31,12 @@ php bin/console server:start
 
 #Docker
 ```shell
-docker-compose run php-fpm composer install
+cd docker
+docker-compose run php-fpm  bin/console doctrine:migration:sync-metadata-storage
 docker-compose run php-fpm  bin/console doctrine:database:create
 docker-compose run php-fpm  bin/console doctrine:database:create --env=test
 docker-compose run php-fpm  bin/console doctrine:migrations:migrate
 // Charger les fixtures (fake data)
-docker-compose run php-fpm  bin/console doctrine:migration:sync-metadata-storage
 docker-compose run php-fpm  bin/console doctrine:fixtures:load
 ```
 
@@ -53,6 +53,7 @@ php ./vendor/bin/phpunit
 ```
 
 ## Todo
+- Problème avec Docker et la version de la BDD. La table doctrine migration semblent avoir des différences avec l'expected
 - Nouvelle refacto de Doctrine Inheritence Mapping, créer un FormType par entité est spécifié les asserts dans la classe
 - Ajouter un système de création de Token crypté (JWT) avec un délais de validité et ne plus utiliser uniquement l'adresse mail comme token
 - Ajouter un event listener sur les erreurs pour les transformer en JSON et améliorer les infos de retour et bloquer les retours sensibles pour la sécurité
