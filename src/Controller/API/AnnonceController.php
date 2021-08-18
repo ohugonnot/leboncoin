@@ -24,6 +24,8 @@ class AnnonceController extends AbstractController
 {
     use TraitementTrait;
 
+    const LIMIT_BY_DEFAULT = 100;
+
     private SerializerInterface $serializer;
 
     public function __construct(SerializerInterface $serializer)
@@ -42,12 +44,14 @@ class AnnonceController extends AbstractController
         if(!$name)
             return $repo;
         $categorie = $this->getCategorieByName($name);
-        if($categorie && $categorie->getName() === Categorie::AUTOMOBILE)
+        if(!$categorie)
+            return $repo;
+        if($categorie->getName() === Categorie::AUTOMOBILE)
             $repo = AnnonceAutomobile::class;
-        if($categorie && $categorie->getName() === Categorie::IMMOBILIER)
+        if($categorie->getName() === Categorie::IMMOBILIER)
             $repo = AnnonceImmobilier::class;
-        if($categorie && $categorie->getName() === Categorie::EMPLOI)
-            $repo = AnnonceAutomobile::class;
+        if($categorie->getName() === Categorie::EMPLOI)
+            $repo = AnnonceEmploi::class;
         return $repo;
     }
 
@@ -57,11 +61,13 @@ class AnnonceController extends AbstractController
         if(!$name)
             return $annonce;
         $categorie = $this->getCategorieByName($name);
-        if($categorie && $categorie->getName() === Categorie::AUTOMOBILE)
+        if(!$categorie)
+            return $annonce;
+        if($categorie->getName() === Categorie::AUTOMOBILE)
             $annonce = new AnnonceAutomobile();
-        if($categorie && $categorie->getName() === Categorie::IMMOBILIER)
+        if($categorie->getName() === Categorie::IMMOBILIER)
             $annonce = new AnnonceImmobilier();
-        if($categorie && $categorie->getName() === Categorie::EMPLOI)
+        if($categorie->getName() === Categorie::EMPLOI)
             $annonce = new AnnonceEmploi();
         return $annonce;
     }
@@ -71,7 +77,7 @@ class AnnonceController extends AbstractController
      */
     public function searchAnnonceAutomobile(Request $request, ?string $q=null): JsonResponse
     {
-        // Todo Methode pure PHP à améliorer avec une requête dans le repo
+        // @Todo Methode pure PHP à améliorer avec une requête dans le repo
         $q = $q??$request->query->get('q');
         $annonces = $this->getDoctrine()->getManager()->getRepository(AnnonceAutomobile::class)->findAll();
         $resultats = [];
@@ -83,7 +89,7 @@ class AnnonceController extends AbstractController
         }
         krsort($resultats);
         $resultats = array_values($resultats);
-        $resultats = array_slice($resultats,0,$request->query->get('limit'));
+        $resultats = array_slice($resultats,0,$request->query->get('limit',self::LIMIT_BY_DEFAULT));
         $resultats = $this->serializer->serialize($resultats,'json',SerializationContext::create()->setGroups(['Automobile','Search']));
         return JsonResponse::fromJsonString($resultats,200);
     }
