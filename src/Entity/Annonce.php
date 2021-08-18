@@ -25,6 +25,7 @@ class Annonce
 
     /**
      * @ORM\Id
+     * @Groups({"Immobilier","Automobile","Emploi"})
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */

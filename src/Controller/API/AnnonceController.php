@@ -79,10 +79,11 @@ class AnnonceController extends AbstractController
         {
             similar_text(strtolower($q), strtolower($annonce->getModele()),$perc);
             $annonce->match=$perc;
-            $resultats[$perc] = $annonce;
+            $resultats[$perc.$annonce->getId()] = $annonce;
         }
         krsort($resultats);
         $resultats = array_values($resultats);
+        $resultats = array_slice($resultats,0,$request->query->get('limit'));
         $resultats = $this->serializer->serialize($resultats,'json',SerializationContext::create()->setGroups(['Automobile','Search']));
         return JsonResponse::fromJsonString($resultats,200);
     }
@@ -106,6 +107,8 @@ class AnnonceController extends AbstractController
     {
         $repo = $this->getCategorieRepo($categorie);
         $annonce = $this->getDoctrine()->getRepository($repo)->find($id);
+        if(!$annonce)
+            return new JsonResponse('Not Found',Response::HTTP_NOT_FOUND);
         return JsonResponse::fromJsonString($this->serializer->serialize($annonce,'json'));
     }
 

@@ -35,11 +35,17 @@ login : test1@test.test
 mdp : test
 ![img.png](public/img.png)
 
+### Pour les tests
+```shell
+php ./vendor/bin/phpunit
+```
+
 ## Todo
 - Nouvelle refacto de Doctrine Inheritence Mapping, créer un FormType par entité est spécifié les asserts dans la classe
 - Ajouter un système de création de Token crypté (JWT) avec un délais de validité et ne plus utiliser uniquement l'adresse mail comme token
 - Ajouter un event listener sur les erreurs pour les transformer en JSON et améliorer les infos de retour et bloquer les retours sensibles pour la sécurité
 - Optimiser le moteur de recherche avec le % de match pour passer directement faire la requête directement en DQL plutôt que Full PHP
+- Ajouter des variables get (limit,sort,order,offset) pour créer les pagers
 - Ajouter un système de cache pour l'API avec Doctrine Cache pour améliorer les perfs tant que la base de données ne change pas
 - Ajouter les tests unitaires et fonctionnels sur les parties sensibles (route POST, PUT, DELETE, GET et la recherche)
 - Monter le projet avec docker
@@ -53,4 +59,4 @@ mdp : test
 - Pour la recherche avec le matching :
   - Possibilité de Elastic Search mais overkill 
   - regex dans le SQL avec like %% mais j'aime pas trop l'idée et pas de pourcentage de match pour le classement des bonnes reponses
-  - la version pure PHP avec similar_text
+  - la version pure PHP avec similar_textwe

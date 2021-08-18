@@ -23,7 +23,7 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        foreach (range(0,1000) as $nombre) {
+        foreach (range(1,300) as $nombre) {
             $categorie = Categorie::CATEGORIES[array_rand(Categorie::CATEGORIES)];
             if($categorie === Categorie::EMPLOI)
             {
@@ -47,6 +47,21 @@ class AnnonceFixtures extends Fixture implements DependentFixtureInterface
                 $annonce->setPrix($this->faker->numberBetween(300,2000));
                 $annonce->setSurface($this->faker->numberBetween(25,500));
             }
+            $annonce->setCategorie($this->getReference($categorie));
+            $annonce->setUser($this->getReference($nombre%12+1));
+            $annonce->setTitre($categorie.' : '.$this->faker->realText('25'));
+            $annonce->setContenu($this->faker->realText());
+            $manager->persist($annonce);
+        }
+        foreach (range(1,700) as $nombre) {
+            $categorie = Categorie::AUTOMOBILE;
+            $annonce = new AnnonceAutomobile();
+            $marque = AnnonceAutomobile::MARQUES[array_rand(AnnonceAutomobile::MARQUES)];
+            $modele = AnnonceAutomobile::MODELES[$marque][array_rand(AnnonceAutomobile::MODELES[$marque])];
+            $annonce->setMarque($marque);
+            $annonce->setModele($modele);
+            $annonce->setCarburant(AnnonceAutomobile::CARBURANTS[array_rand(AnnonceAutomobile::CARBURANTS)]);
+            $annonce->setPrix($this->faker->numberBetween(800,9000));
             $annonce->setCategorie($this->getReference($categorie));
             $annonce->setUser($this->getReference($nombre%12+1));
             $annonce->setTitre($categorie.' : '.$this->faker->realText('25'));
